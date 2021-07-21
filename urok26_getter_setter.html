@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+class Person {
+
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this._gender = null; // приватное поле
+    }
+
+    // Геттер(возвращаемый) - свойство, который инициализируется ключ. словом get. Используется для получения значения (т.е. в нем обязательно исп. оператора return). Часто исп. для возвращения значения приватного свойства.
+    get gender() {
+        return this._gender;
+    }
+
+    // Сеттер(установщик) - свойство, позволяющее установить значение приватного свойства, переменная в параметре является обязательной
+    set gender(value) {
+        if(value === 'male' || value === 'female') {
+            this._gender = value;
+        } else {
+            console.log('Можно выбрать только мужской или женский пол');
+        }
+    }
+
+    getFullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+}
+const aleksey = new Person('Aleksey', 'Petrovskiy');
+console.log(aleksey.gender); // null, вызовем геттер
+aleksey.gender = 'hsd'; // устанавливаем значение в приватное свойство через геттер
+console.log(aleksey.gender); // null, вызываем геттер
+aleksey.gender = 'male'; // еще раз устанавливаем значение через геттер
+console.log(aleksey.gender); // male
+console.log(aleksey.getFullName());
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OOP</title>
+</head>
+<body>
+
+<div id="content"></div>
+
+<script>
+    // ООП - объектно-ориентированное программирование.
+    // ООП - является парадигмой программирования
+    // Парадигма - это какая-то модель, шаблон(паттерн), которого необходимо придерживаться при написании программы.
+    // За основу парадигмы ООП взято такое понятие как АБСТРАКЦИЯ
+    // Абстракция - это какая-то не конкретизирующая сущность. Пример: Человек, статьи на сайте, заявка в банке, машина, дома
+    // Все программное обеспечение - это абстракция, скрывающая всю тяжелую работу и детали. Предоставляя пользователю лишь интерфейс взаимодействия.
+
+    // Основной ООП структурно являются КЛАССЫ (появились в ES6)
+    // class - это шаблон, чертеж описания сущности
+
+    class Tank {
+        // внутри класса мы можем создавать:
+        // 1) СВОЙСТВА/properties (поля класса/fields) - по сути, это характеристики сущности. Пример: количество снарядов, кол-во гусениц, скорость
+        // 2) МЕТОДЫ/methods - по сути, это функции внутри класса. Это то, что может делать сущность. Пример: ездить, стрелять, летать
+        // tankName = ''; // объявление поле класса
+        // ammunition = 0; // объявление поле класса
+
+        constructor(tankName, ammunition = 5) {
+            this.tankName = tankName;
+            this.ammunition = ammunition;
+        }
+
+        moveTo(x, y) {
+            // this - ключевое слово, позволяющая обращаться к объектам в пределах контекста использования. Т.е. обращение к свойствам и методам класса, внутри самого класса осуществляется через this
+            console.log(`Координаты движения танка ${this.tankName}: (${x}, ${y})`);
+        }
+
+        fireTo(x, y) {
+            console.log(`Открыть огонь по координатам (${x}, ${y})`);
+            if(this._canFire(this.ammunition)) {
+                this.ammunition -= 1;
+                console.log(`Снарядов у танка ${this.tankName} осталось ${this.ammunition} снарядов`);
+            } else {
+                console.log('Снаряды закончились. Стрельба невозможна');
+            }
+        }
+
+        moveAndFire(moveX, moveY, fireX, fireY) {
+            this.moveTo(moveX, moveY);
+            this.fireTo(fireX, fireY);
+        }
+
+        // метод для проверки "могу ли стрелять"
+        // если перед методом или свойством написано _ то это свойство или метод являются закрытыми(private) и не должны вызываться за пределами класса. Такое именование чисто условно, и придумано сообществом разработчиков, по факту, этот метод ничем не отличается от других
+        _canFire(ammunition) {
+            return ammunition > 0;
+        }
+    }
+
+    // Tank() - в скобках передаются значения в constructor класса, если конструктора нет, то круглые скобки можно не указывать.
+    const t34 = new Tank('T34', 100); // мы создали экземпляр(объект) класса(сущности) и занесли его в переменную t34. После этого, переменная t34 имеет доступ к свойствам и методам класса Tank
+    t34.moveTo(45, 12);
+    t34.fireTo(11.2, 53);
+    t34.fireTo(541.2, 53);
+    t34.fireTo(21.2, 564);
+    t34.fireTo(61.2, 5);
+    t34.fireTo(176.2, 323);
+    t34.moveAndFire(64, 754, 21.2, 53.6);
+
+    const kv = new Tank('Клим Ворошилов', 1);
+    kv.fireTo(34,53);
+    kv.fireTo(34,53); // будет выведно сообщение о невозможности выстрела
+    // kv.ammunition = 895; // можем менять и свойства, но это не всегда стоит делать
+
+
+    //---------------------------------------------------------------------------------------------------------------------------------------
+
+    // Задание №1
+
+    class Marker {
+        constructor(color, paint) {
+            this.color = color;
+            this.paint = paint;
+        }
+
+        print(string) {
+            let a = 0;
+            let b = '';
+            while (this.paint && string[a]) {
+                if (string[a] !== ' ') this.paint -= 0.5;
+                b += string[a++];
+            }
+            if (!this.paint) alert("Закончились чернила!");
+
+            const resultBlock = document.createElement('p');
+            resultBlock.style.color = this.color;
+
+
+            resultBlock.innerHTML = b;
+            document.querySelector('body').appendChild(resultBlock);
+        }
+    }
+
+    const redMarker = new Marker('red', 50);
+    redMarker.print("метод для печати (метод принимает строку и выводит текст соответствующим цветом;");
+    redMarker.print("метод для печати (метод принимает строку и выводит текст соответствующим цветом;");
+
+    const blueMarker = new Marker('blue', 20);
+    blueMarker.print("метод для печати (метод принимает строку и выводит текст соответствующим цветом;");
+    blueMarker.print("метод для печати (метод принимает строку и выводит текст соответствующим цветом;");
+
+    //-----------------------------------------------------------------------------------------------------------
+
+// Задание №2
+    const mainDiv = document.getElementById("content");
+
+    const tableDiv = document.createElement("div");
+    tableDiv.setAttribute("id", "content__tableDiv");
+    tableDiv.className = "content__tableDiv";
+
+    const tableTag = document.createElement("table");
+    tableTag.setAttribute("id", "content__table");
+    tableTag.className = "content__table";
+
+    tableDiv.append(tableTag);
+    mainDiv.append(tableDiv);
+
+    class Employee {
+        constructor(name, position, department, salary) {
+            this.name = name;
+            this.position = position;
+            this.department = department;
+            this.salary = salary;
+        }
+    }
+    const arrEmp = [
+        new Employee("Алексей Смирнов", "Управляющий", "управление", 10000),
+        new Employee("Дмитрий Иванов", "отдел рисков", "безопасности", 5000),
+        new Employee("Иван ДыркОв", "ст.менеджер", "Sales", 6000),
+        new Employee("Денис Денисов", "Менеджер", "Sales", 5000),
+        new Employee("Максим Пуркин", "Трейдер", "Sales", 3000),
+        new Employee("Олег Гордан", "Кассир", "Sales", 2000),
+        new Employee("Ирина Ламбина", "Кассир", "Sales", 3500),
+
+    ];
+    class EmpTable {
+        constructor(arr) {
+            this.arr = arr;
+        }
+        getHtml() {
+            const table = document.getElementById("content__table");
+            const array = this.arr;
+            const head = document.createElement("tr");
+            head.setAttribute("style", "font-size: 18px;");
+            const th1 = document.createElement("th");
+            th1.textContent = "Имя";
+            const th2 = document.createElement("th");
+            th2.textContent = "Должность";
+            const th3 = document.createElement("th");
+            th3.textContent = "Отдел";
+            const th4 = document.createElement("th");
+            th4.textContent = "Зарплата ($)";
+            head.append(th1);
+            head.append(th2);
+            head.append(th3);
+            head.append(th4);
+            table.append(head);
+            for (let i in array) {
+                let tr = document.createElement("tr");
+                table.append(tr);
+                for (let j in array[i]) {
+                    let td = document.createElement("td");
+                    td.textContent = array[i][j];
+                    tr.append(td);
+                    td.setAttribute("style", "padding: 5px 10px; font-size: 18px;");
+                }
+            }
+            table.setAttribute("border", "2");
+            table.setAttribute("bordercolor", "brown");
+            table.setAttribute("width", "60%");
+            table.setAttribute("style", "margin: auto; background-color: lightgrey;");
+        }
+    }
+    const tableObj = new EmpTable(arrEmp);
+    tableObj.getHtml();
+
+
+</script>
+</body>
+</html>
